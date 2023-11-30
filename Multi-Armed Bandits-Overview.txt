@@ -1,0 +1,218 @@
+>> Chapter two, which you're about to read,
+is the first technical chapter of this book.
+And it covers a simplified setting of reinforcement learning
+one in which there are different actions,
+but there's not different states.
+So thinking back to the activity you did
+associated with the first chapter,
+where you saw a different color in each state
+and there was a four by three grid,
+pretend now that there's really only
+a one by one grid.
+There's just one state, one observation,
+you always see green.
+You can still take actions,
+wave, step, clap, and stand.
+They each give you a different reward,
+and maybe a distribution of rewards.
+And you have to try to figure out
+what's the right action, the best action to take.
+And so this will allow us to examine,
+in a sort of degenerate case of reinforcement learning,
+one where there is only one state,
+we can still look at concepts of expected values
+of actions and experiences,
+and simple ways to use those values
+to choose future actions.
+>> After we look at that, we'll look at something
+known as the exploration exploitation problem.
+This is an idea that whenever you're trying to learn
+how good a particular action is,
+either in a state in the full reinforcement learning problem
+or in this bandit case without states,
+you start with incomplete information,
+usually no information, and as you explore
+you gain more information about
+how good the different actions are.
+But at some point if you want to maximize
+return or total reward, you have to begin to exploit.
+You have to start doing the thing that looks good.
+Now if from very early on, you begin to exploit,
+you can miss out by not exploring enough.
+So in the example from earlier,
+I didn't spend a ton of time exploring
+lots of different options.
+I stopped when I got that plus ten reward at green.
+There could have been something better out there.
+You might be familiar with situations like this.
+So if you go to a restaurant you like,
+you might just order the same thing off the menu
+every time you go there because you're exploiting.
+You've discovered something you know you like.
+You know that if you explore, sure you might find
+something you like a little bit more,
+but you also might be very disappointed.
+And it's going to be very important to balance
+both exploration and exploitation
+in order to do well in both bandit problems
+and the full reinforcement learning problem.
+>> So the reason this structure is called a bandit problem
+is from slot machines in casinos
+in Las Vegas or Atlantic City, where you have
+a slot machine that has multiple arms,
+K arms in this case, so I'm acting now
+as a two armed bandit.
+I've got my left arm and my right arm.
+In general, you, if you're playing that slot machine,
+have to decide which arm to pull.
+If you pull my left arm, then you might get
+something that says, oh you got no reward.
+But then if you pull it again,
+maybe you get three dollars.
+You pull my right arm, you get something else.
+And you have to try to figure out
+which is the best arm to pull.
+What's going to give you the best expected payoff over time?
+And so bandit problems allow you to try to model this
+to try to figure out what actions to take.
+And so we're going to run an example activity.
+Again, to give you the sense of what it's like
+to act as a bandit.
+In particular, I have two arms, left and right.
+And Scott is going to again be put in the position
+of trying to figure out what actions to take.
+He'll pull the left arm and I'll give a reward.
+He'll pull the right arm and I'll give a reward.
+He'll have to decide what to do next.
+So which would you like to do first?
+>> Let's do left arm.
+>> He pulls my left arm.
+I have a program that will give the response,
+and he gets a payoff of six.
+>> Okay, so I'm going to keep track of this.
+So I got a payoff of six for the left arm.
+Let's see what right does.
+>> So he pulls the right arm.
+And go to my trusty program, and he gets a payoff of 20.
+>> I like that.
+So if I'm gambling with my real money,
+I think I'm going right again.
+>> So he goes right again, and he gets a 13.
+>> I'm liking it, let's do right again.
+>> And now he gets a zero.
+>> Oh okay, now I'm feeling a little less certain
+about right now, so let's try left.
+>> Okay so we go back to left, and he gets a ten.
+>> Okay, not bad but not great.
+Let's do left one more time.
+>> Eight >> Um, one more.
+>> Left again? >> Yeah.
+>> A nine. >> Let's go back to right.
+>> Okay, and with right gets a nine.
+>> Let's do right again.
+>> 20. >> 20, all right.
+Let's keep doing right.
+>> 10 >> Right
+>> 20 >> All right.
+I think I'm pretty much in exploit mode now.
+I've seen something pretty consistently
+way better on the right arm then the left arm.
+I could be missing a rare event on the left.
+So let's do left just one or two more times
+and see how it goes.
+>> Okay, left gives a seven.
+>> And left again. >> A 10.
+>> No, I'm not a big fan; let's go back to right.
+>> Zero >> All right, right again.
+>> 14 >> All right.
+I still feel like I have enough data at this point
+to fairly confidently say that right is better.
+>> And so from now on, Scott would probably
+continue with the right arm,
+unless you start seeing some evidence to the contrary.
+And that turns out is the right answer.
+So the program I was running,
+for the left arm, missing a bracket here, there we go.
+There was a uniform random distribution
+from the numbers five through eleven,
+with an expectation of eight.
+And so if you pulled the left arm infinitely often,
+it would converge to an expected value of eight.
+The right arm was a little more complicated,
+as you might have observed.
+One third of the time it gave a zero.
+One third of the time it gave a 20.
+And then one third of the time
+it picked a uniform random distribution
+from the numbers seven through 17.
+And so if you do the math on here,
+its expectation is indeed higher over time.
+If you pulled the right arm forever,
+you'd get a payoff of 10.67.
+>> I like this; this is easier than your color maze.
+(laughing)
+>> So as we move forwards in this chapter,
+we're going to examine mathematically principled ways
+of trying to select what actions to take.
+So as Scott was going through,
+he was doing some exploration, some exploitation.
+There's relatively simple ways of doing it.
+There's more sophisticated ways.
+And we'll especially emphasize the ones
+that generalize to the full reinforcement learning problem
+when you do actually have to take
+different actions in different states.
+>> After we've addressed some of those issues,
+the book's going to take a look at
+something called gradient bandit methods,
+which are an alternative way of performing learning
+in a way that uses gradients to learn,
+and that doesn't require tracking action values,
+like the rest of the methods we're going to look at.
+Now, we really want you to take a close look
+at this section when you're reading.
+It's the most mathematically rigorous part of the chapter,
+and it might not be very clearly motivated right now
+as to why this alternate way of doing things
+might be interesting.
+But a lot of these ideas are going to come back again
+when we look at the full reinforcement learning problem
+in the form of something called policy gradient methods.
+And so if we look at it in this very simplified
+state now with bandit problems,
+policy gradients in the full RL problem
+are going to make a lot more sense.
+So please take a careful look at both
+the big ideas in this section and the mathematical details.
+>> And then finally, the book is going to close
+with just a really brief mention
+of what's known as contextual bandits.
+And this will form a bridge to the
+full reinforcement learning problem.
+And the idea here is that given the example
+that Scott mentioned in the beginning,
+if you're trying to figure out what you like
+off the menu of your restaurant,
+if might be that you like some foods better in the morning
+and other foods in the evening.
+Or some food after you've exercised,
+and some food when you haven't exercised recently.
+Each of those situations is a different context,
+and it may be that you want to choose
+a different item from the menu.
+You want to pull a different arm in each of those contexts.
+That's sort of a bridge to the full
+reinforcement learning problem in the sense that
+you get different payoffs in different contexts,
+which you can think of as states,
+but the action you take does not determine
+what context you end up next in.
+Those just happen sort of exogenously.
+In the full reinforcement learning problem,
+thinking back to the activity associated
+with the first chapter, the action both gave you a reward
+and transitioned you to a new state.
+In contextual bandits, it's just that
+there's a different reward in each state.
+So with that, go on and start reading the chapter.
+And again pay close attention to the mathematical details.
